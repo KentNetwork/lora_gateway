@@ -90,8 +90,15 @@ Maintainer: Sylvain Miermont
 /* constant arrays defining hardware capability */
 const uint8_t ifmod_config[LGW_IF_CHAIN_NB] = LGW_IFMODEM_CONFIG;
 
+#if (CFG_SPI_NATIVE == 1)
+	#define		CFG_SPI_STR		"native"
+#elif (CFG_SPI_FTDI == 1)
+	#define		CFG_SPI_STR		"ftdi"
+#else
+	#define		CFG_SPI_STR		"spi?"
+#endif
 /* Version string, used to identify the library version/options once compiled */
-const char lgw_version_string[] = "Version: " LIBLORAGW_VERSION ";";
+const char lgw_version_string[] = "Version: " LIBLORAGW_VERSION "; Options: " CFG_SPI_STR ";";
 
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE VARIABLES ---------------------------------------------------- */
