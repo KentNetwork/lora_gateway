@@ -36,7 +36,14 @@ Maintainer: Michael Coracin
 #include "loragw_hal.h"
 #include "loragw_radio.h"
 #include "loragw_fpga.h"
+#include "config.h"
 
+#ifndef SPI_SPEED
+#define SPI_SPEED 8000000
+#endif
+#ifndef SPI_DEV_PATH
+#define SPI_DEV_PATH "/dev/null"
+#endif
 /* -------------------------------------------------------------------------- */
 /* --- MACROS & CONSTANTS --------------------------------------------------- */
 
@@ -203,7 +210,7 @@ int main( int argc, char ** argv )
     /* Start message */
     printf("+++ Start spectral scan of LoRa gateway channels +++\n");
 
-    x = lgw_connect(true, 0); /* SPI only, no FPGA reset/configure (for now) */
+    x = lgw_connect(true, 0,SPI_SPEED,SPI_DEV_PATH); /* SPI only, no FPGA reset/configure (for now) */
     if(x != 0) {
         printf("ERROR: Failed to connect to FPGA\n");
         return EXIT_FAILURE;
@@ -264,7 +271,7 @@ int main( int argc, char ** argv )
             printf("ERROR: Failed to disconnect from FPGA\n");
             return EXIT_FAILURE;
         }
-        x = lgw_connect(false, LGW_DEFAULT_NOTCH_FREQ); /* FPGA reset/configure */
+        x = lgw_connect(false, LGW_DEFAULT_NOTCH_FREQ,SPI_SPEED,SPI_DEV_PATH); /* FPGA reset/configure */
         if(x != 0) {
             printf("ERROR: Failed to connect to FPGA\n");
             return EXIT_FAILURE;

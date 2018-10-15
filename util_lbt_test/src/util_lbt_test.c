@@ -38,6 +38,15 @@ Maintainer: Michael Coracin
 #include "loragw_radio.h"
 #include "loragw_fpga.h"
 
+#include "config.h"
+
+#ifndef SPI_SPEED
+#define SPI_SPEED 8000000
+#endif
+#ifndef SPI_DEV_PATH
+#define SPI_DEV_PATH "/dev/null"
+#endif
+
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE MACROS & CONSTANTS ------------------------------------------- */
 
@@ -170,7 +179,7 @@ int main(int argc, char **argv)
     sigaction(SIGTERM, &sigact, NULL);
 
     /* Connect to concentrator */
-    i = lgw_connect(false, LGW_DEFAULT_NOTCH_FREQ);
+    i = lgw_connect(false, LGW_DEFAULT_NOTCH_FREQ, SPI_SPEED, SPI_DEV_PATH);
     if (i != LGW_REG_SUCCESS) {
         MSG("ERROR: lgw_connect() did not return SUCCESS\n");
         return EXIT_FAILURE;
