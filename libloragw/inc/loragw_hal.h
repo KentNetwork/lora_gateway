@@ -339,7 +339,7 @@ int lgw_txgain_setconf(struct lgw_tx_gain_lut_s *conf);
 @param speed communication speed in HZ for the SPI interface 
 @return LGW_HAL_ERROR id the operation failed, LGW_HAL_SUCCESS else
 */
-int lgw_start(long speed);
+int lgw_start(long speed, const char *device);
 
 /**
 @brief Stop the LoRa concentrator and disconnect it
