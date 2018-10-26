@@ -62,7 +62,7 @@ Maintainer: Sylvain Miermont
 /* --- PUBLIC FUNCTIONS DEFINITION ------------------------------------------ */
 
 /* SPI initialization and configuration */
-int lgw_spi_open(void **spi_target_ptr) {
+int lgw_spi_open(void **spi_target_ptr, long speed, const char *device) {
     int *spi_device = NULL;
     int dev;
     int a=0, b=0;
@@ -79,7 +79,11 @@ int lgw_spi_open(void **spi_target_ptr) {
     }
 
     /* open SPI device */
-    dev = open(SPI_DEV_PATH, O_RDWR);
+    if (device != NULL) {
+        dev = open(device, O_RDWR);
+    } else {
+        dev = open(SPI_DEV_PATH, O_RDWR);
+    }
     if (dev < 0) {
         DEBUG_PRINTF("ERROR: failed to open SPI device %s\n", SPI_DEV_PATH);
         return LGW_SPI_ERROR;
@@ -97,7 +101,7 @@ int lgw_spi_open(void **spi_target_ptr) {
     }
 
     /* setting SPI max clk (in Hz) */
-    i = SPI_SPEED;
+    i = speed;
     a = ioctl(dev, SPI_IOC_WR_MAX_SPEED_HZ, &i);
     b = ioctl(dev, SPI_IOC_RD_MAX_SPEED_HZ, &i);
     if ((a < 0) || (b < 0)) {

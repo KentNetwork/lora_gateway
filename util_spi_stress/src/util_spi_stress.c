@@ -33,6 +33,14 @@ Maintainer: Sylvain Miermont
 #include <stdlib.h>     /* rand */
 
 #include "loragw_reg.h"
+#include "config.h"
+
+#ifndef SPI_SPEED
+    #define SPI_SPEED 8000000
+#endif
+#ifndef SPI_DEV_PATH
+    #define SPI_DEV_PATH "/dev/null"
+#endif
 
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE MACROS ------------------------------------------------------- */
@@ -140,7 +148,7 @@ int main(int argc, char **argv)
     sigaction(SIGTERM, &sigact, NULL);
 
     /* start SPI link */
-    i = lgw_connect(false, DEFAULT_TX_NOTCH_FREQ);
+    i = lgw_connect(false, DEFAULT_TX_NOTCH_FREQ,SPI_SPEED,SPI_DEV_PATH);
     if (i != LGW_REG_SUCCESS) {
         MSG("ERROR: lgw_connect() did not return SUCCESS");
         return EXIT_FAILURE;

@@ -35,7 +35,13 @@ Maintainer: Michael Coracin
 #include "loragw_hal.h"
 #include "loragw_gps.h"
 #include "loragw_aux.h"
-
+#include "config.h"
+#ifndef SPI_SPEED
+    #define SPI_SPEED 8000000
+#endif
+#ifndef SPI_DEV_PATH
+    #define SPI_DEV_PATH "/dev/null"
+#endif
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE VARIABLES ---------------------------------------------------- */
 
@@ -184,7 +190,7 @@ int main()
     rfconf.tx_enable = true;
     lgw_rxrf_setconf(0, rfconf);
 
-    lgw_start();
+    lgw_start(SPI_SPEED, SPI_DEV_PATH);
 
     /* initialize some variables before loop */
     memset(serial_buff, 0, sizeof serial_buff);

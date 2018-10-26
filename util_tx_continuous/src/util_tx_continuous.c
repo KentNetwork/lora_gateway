@@ -37,6 +37,14 @@ Maintainer: Matthieu Leurent
 #include "loragw_hal.h"
 #include "loragw_reg.h"
 #include "loragw_aux.h"
+#include "config.h"
+
+#ifndef SPI_SPEED
+    #define SPI_SPEED 8000000
+#endif
+#ifndef SPI_DEV_PATH
+    #define SPI_DEV_PATH "/dev/null"
+#endif
 
 /* -------------------------------------------------------------------------- */
 /* --- MACROS & CONSTANTS --------------------------------------------------- */
@@ -335,7 +343,7 @@ int main(int argc, char **argv)
     lgw_txgain_setconf(&txlut);
 
     /* Start the concentrator */
-    i = lgw_start();
+    i = lgw_start(SPI_SPEED,SPI_DEV_PATH);
     if (i == LGW_HAL_SUCCESS) {
         MSG("INFO: concentrator started, packet can be sent\n");
     } else {
